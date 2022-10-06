@@ -1,5 +1,7 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import domain.Output;
 import domain.Wortify;
 
 import java.io.File;
@@ -14,7 +16,13 @@ import java.util.Objects;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Gson gson = new Gson();
+        Path outputPath = Path.of("output.json");
+
+        if (!Files.exists(outputPath)) {
+            Files.createFile(outputPath);
+        }
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Path path = new File(Objects.requireNonNull(Main.class
                         .getResource("/letters.json"))
@@ -41,15 +49,19 @@ public class Main {
                 .sorted(Comparator.comparingInt(String::length))
                 .toList();
 
-        System.out.println(words.parallelStream()
+        String json = gson.toJson(new Output(words.parallelStream()
                 .map(String::toLowerCase)
                 .map(String::trim)
                 .filter(word -> !haveAlready.contains(word))
                 .filter(word -> word.contains(wortify.getRequired()))
                 .filter(word -> word.matches(patten))
                 .filter(word -> word.length() > 3)
-                .sorted(Comparator.comparingInt(String::length))
-                .toList());
+                .sorted(Comparator.comparingInt(value -> -1 * value.length()))
+                .toList()));
+
+        System.out.println(json);
+
+        Files.writeString(outputPath, json);
     }
 
 }
