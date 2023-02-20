@@ -13,6 +13,11 @@ public class Wortify {
         this.letters.add(required);
     }
 
+    public Wortify(char charAt, List<String> allLetters) {
+        this.required = String.valueOf(charAt);
+        this.letters = allLetters;
+    }
+
     public String getRequired() {
         return required;
     }
