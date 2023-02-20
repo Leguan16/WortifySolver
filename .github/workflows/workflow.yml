@@ -29,4 +29,9 @@ jobs:
         with:
           name: output.json
           path: output.json
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: /build/reports/tests/test/index.html
+          path: /
 

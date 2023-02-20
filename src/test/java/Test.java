@@ -4,7 +4,7 @@ public class Test {
 
     @org.junit.jupiter.api.Test
     public void test() throws IOException {
-        Main.main(null);
+        Main.main(new String[0]);
 
     }
 }
