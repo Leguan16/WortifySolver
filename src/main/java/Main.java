@@ -6,11 +6,12 @@ import domain.Wortify;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 public class Main {
 
@@ -21,7 +22,6 @@ public class Main {
             Files.createFile(outputPath);
         }
 
-        //String todaysWortify = getTodaysWortify();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         Path path = new File(Objects.requireNonNull(Main.class
@@ -59,26 +59,6 @@ public class Main {
                 .sorted(Comparator.comparingInt(value -> -1 * value.length()))
                 .toList()));
 
-        System.out.println(json);
-
         Files.writeString(outputPath, json);
     }
-
-    private static String getTodaysWortify() {
-        String content = null;
-        URLConnection connection = null;
-        try {
-            connection =  new URL("https://6mal5.com/wortify/").openConnection();
-            Scanner scanner = new Scanner(connection.getInputStream());
-            scanner.useDelimiter("\\Z");
-            content = scanner.next();
-            scanner.close();
-        }catch ( Exception ex ) {
-            ex.printStackTrace();
-        }
-        System.out.println(content);
-
-        return content;
-    }
-
 }
