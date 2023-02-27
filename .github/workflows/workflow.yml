@@ -32,6 +32,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: index.html
-          path: build/reports/tests/test/index.html
+          name: test
+          path: build/reports/tests/test/
 
